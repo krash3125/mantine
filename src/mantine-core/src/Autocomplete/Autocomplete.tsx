@@ -34,6 +34,9 @@ export interface AutocompleteProps
     InputWrapperBaseProps,
     SelectSharedProps<AutocompleteItem, string>,
     Omit<React.ComponentPropsWithoutRef<'input'>, 'size' | 'onChange' | 'value' | 'defaultValue'> {
+  /** Min String Length for Filter */
+  filterLenMin?: number;
+
   /** Maximum dropdown height */
   maxDropdownHeight?: number | string;
 
@@ -42,6 +45,7 @@ export interface AutocompleteProps
 
   /** Called when item from dropdown was selected */
   onItemSubmit?(item: AutocompleteItem): void;
+
 }
 
 export function defaultFilter(value: string, item: AutocompleteItem) {
@@ -58,6 +62,7 @@ const defaultProps: Partial<AutocompleteProps> = {
   transitionDuration: 0,
   initiallyOpened: false,
   filter: defaultFilter,
+  filterLenMin: 0,
   switchDirectionOnFlip: false,
   zIndex: getDefaultZIndex('popover'),
   dropdownPosition: 'flip',
@@ -89,6 +94,7 @@ export const Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>((pro
     classNames,
     styles,
     filter,
+    filterLenMin,
     nothingFound,
     onDropdownClose,
     onDropdownOpen,
@@ -134,7 +140,7 @@ export const Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>((pro
   };
 
   const formattedData = data.map((item) => (typeof item === 'string' ? { value: item } : item));
-  const filteredData = filterData({ data: formattedData, value: _value, limit, filter });
+  const filteredData = filterData({ data: formattedData, value: _value, limit, filter, filterLenMin: filterLenMin });
 
   const handleInputKeydown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (IMEOpen) {

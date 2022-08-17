@@ -76,4 +76,14 @@ storiesOf('Autocomplete', module)
         data={['React', 'Angular', 'Svelte', 'Vue']}
       />
     </SubmitForm>
-  ));
+  ))
+  .add('Filter Length Min', () => (
+    <div style={{ padding: 40, maxWidth: 400 }}>
+      <Autocomplete
+        label="Choose your favorite library/framework"
+        placeholder="Choose value"
+        data={['React', 'Angular', 'Svelte', 'Vue', 'Next', 'Vite', 'SvelteKit']}
+        filterLenMin={4}
+      />
+    </div>
+  ))
